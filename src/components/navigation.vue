@@ -7,12 +7,11 @@
 
  <div class="topnav">
   <a class="active" href="#home">Home ||  </a>
-  <a href="#news">News  ||  </a>
-  <a href="#news">News  ||  </a>
-  <a href="#news">News  ||  </a>
-  <a href="#news">News  ||  </a>
-
-
+  <a href="#paths">Paths  ||  </a>
+  <a href="#courses">Courses  ||  </a>
+  <a href="#modules">Modules  ||  </a>
+  <a href="#contribute">Contribute ||  </a>
+  <a href="#learn">Learn ||  </a>
   <a href="#contact">Contact  ||  </a>
   <a href="#about">About</a>
 </div> 
@@ -42,7 +41,7 @@ export default {
 <style> 
 .topnav{
 
-   background-color: #333;
+   background-color: #a5b9b3;
   overflow: hidden;
 }
 </style>
