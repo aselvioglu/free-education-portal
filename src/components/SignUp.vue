@@ -34,7 +34,8 @@
   <input class="inputStyle" type="text" placeholder="Enter the invitation code" />
 </div>
 
-<button class="buttonStyle">Submit</button>
+<button class="buttonStyle" :disabled="!passwordsMatch">Submit</button>
+
 
   </div>
 </template>
