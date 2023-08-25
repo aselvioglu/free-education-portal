@@ -1,62 +1,67 @@
 <template>
-  <img class="logo" src="../assets/fep.jpg" />
+  <img class="logo" src="../assets/fep.png">
 
   <h1> Sign Up </h1>
   <div>
     <label> name and surname </label>
-    <input class="inputStyle" type="text" placeholder="Enter your fullname" />
+    <input class="inputStyle" type="text" v-model="nameSurname" placeholder="Enter your fullname" />
 
     <label> email </label>
-    <input class="inputStyle" type="text" placeholder="Enter your email" />
+    <input class="inputStyle" type="text" v-model="email" placeholder="Enter your email" />
 
     <label> password </label>
-     <button type="button" @click="switchVisibility1">show/hide</button>
-<input class="inputStyle" :type="passwordFieldType" v-model="password" placeholder="Enter your password">
-   
+    <button type="button" @click="switchVisibility1">show/hide</button>
+    <input class="inputStyle" :type="passwordFieldType" v-model="password" placeholder="Enter your password">
+
     <br>
 
-    <label> confirm the password </label> 
-    
+    <label> confirm the password </label>
+
     <button type="button" @click="switchVisibility2">show/hide</button>
-    <input id="confirmedPassword" class="inputStyle" :type="confirmedPasswordFieldType" v-model="confirmedPassword" placeholder="Confirm your password" />
+    <input id="confirmedPassword" class="inputStyle" :type="confirmedPasswordFieldType" v-model="confirmedPassword"
+      placeholder="Confirm your password" />
     <span v-if="passwordMatchError" class="error-message">{{ passwordMatchError }}</span>
-     
-<br>
-<label for="usersType"> select the user type </label>
+
+    <br>
+    <label for="usersType"> select the user type </label>
     <select class="labelStyle" name="usersType" id="usersType" v-model="userType" @change="userTypeChanged">
       <option value="Apprentice">Apprentice</option>
       <option value="Potent">Potent</option>
     </select>
 
-    
-    <div v-if="userType === 'Potent'" >
-  <label>Invitation code for the user Potent</label>
-  <input class="inputStyle" type="text" placeholder="Enter the invitation code" />
-</div>
 
-<button class="buttonStyle" :disabled="!passwordsMatch">Submit</button>
+    <div v-if="userType === 'Potent'">
+      <label>Invitation code for the user Potent</label>
+      <input class="inputStyle" type="text" v-model="invitationCode" placeholder="Enter the invitation code" />
+    </div>
+
+    <button class="buttonStyle" :disabled="!passwordsMatch" v-on:click="signUp">Sign Up</button>
 
 
   </div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
   name: "SignUp",
   data() {
     return {
+      nameSurname: "",
+      email: "",
       password: "",
-      confirmedPassword: "", 
+      confirmedPassword: "",
       passwordVisible: false,
       confirmedPasswordVisible: false,
-      userType:"Apprentice",
-      passwordMatchError: ""
+      userType: "Apprentice",
+      passwordMatchError: "",
+      invitationCode: ""
     };
   },
   computed: {
     passwordsMatch() {
-    return this.password === this.confirmedPassword;
-  },
+      return this.password === this.confirmedPassword;
+    },
     passwordFieldType() {
       return this.passwordVisible ? "text" : "password";
     },
@@ -65,14 +70,14 @@ export default {
     },
   },
   watch: {
-  passwordsMatch(value) {
-    if (!value) {
-      this.passwordMatchError = "Passwords do not match.";
-    } else {
-      this.passwordMatchError = "";
+    passwordsMatch(value) {
+      if (!value) {
+        this.passwordMatchError = "Passwords do not match.";
+      } else {
+        this.passwordMatchError = "";
+      }
     }
-  }
-},
+  },
 
   methods: {
     switchVisibility1() {
@@ -89,13 +94,41 @@ export default {
 
     },
 
+    async signUp() {
+      let result;
+
+      if (this.userType === "Potent") {
+
+        result = await axios.post("http://localhost:5500/", {
+          nameSurname: this.nameSurname, email: this.email, password: this.password, confirmedPassword: this.confirmedPassword, userType: this.userType, invitationCode: this.invitationCode, 'Content-Type': 'application/json'
+
+        });
+      }
+      else {
+        result = await axios.post("http://localhost:5500/", {
+          nameSurname: this.nameSurname, email: this.email, password: this.password, confirmedPassword: this.confirmedPassword, userType: this.userType, 'Content-Type': 'application/json'
+
+        });
+      }
+      console.warn(result);
+
+
+      if (result.status == 201) {
+        alert('You have successfully signed up!');
+      } else {
+        alert('Sign-up failed. Please check the console for details.');
+      }
+    },
+
+
   },
 };
 </script>
 
 
 
-<style> .logo {
+<style>
+ .logo {
    width: 100px
  }
 
@@ -137,5 +170,4 @@ export default {
    margin-left: auto;
    border: 1px solid skyblue;
    cursor: pointer;
- }
-</style>
+ }</style>

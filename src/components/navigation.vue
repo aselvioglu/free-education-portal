@@ -7,6 +7,7 @@
 
  <div class="topnav">
   <a class="active" href="#home">Home ||  </a>
+  <a href="#tools">Tools  ||  </a>
   <a href="#paths">Paths  ||  </a>
   <a href="#courses">Courses  ||  </a>
   <a href="#modules">Modules  ||  </a>
