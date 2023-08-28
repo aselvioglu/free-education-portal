@@ -1,21 +1,21 @@
 <template>
-  <img class="logo" src="../assets/fep.png">
+    <img class="logo" src="../assets/jep.png"/>
 
   <h1> Sign Up </h1>
   <div>
-    <label> name and surname </label>
-    <input class="inputStyle" type="text" v-model="nameSurname" placeholder="Enter your fullname" />
+    <label for="nameSurname"> name and surname </label>
+    <input id ="nameSurname" class="inputStyle" type="text" v-model="nameSurname" placeholder="Enter your fullname" />
 
-    <label> email </label>
-    <input class="inputStyle" type="text" v-model="email" placeholder="Enter your email" />
+    <label for ="email"> email </label>
+    <input id="email" class="inputStyle" type="text" v-model="email" placeholder="Enter your email" />
 
-    <label> password </label>
+    <label for ="password"> password </label>
     <button type="button" @click="switchVisibility1">show/hide</button>
-    <input class="inputStyle" :type="passwordFieldType" v-model="password" placeholder="Enter your password">
+    <input id="password" class="inputStyle" :type="passwordFieldType" v-model="password" placeholder="Enter your password">
 
     <br>
 
-    <label> confirm the password </label>
+    <label for="confirmedPassword"> confirm the password </label>
 
     <button type="button" @click="switchVisibility2">show/hide</button>
     <input id="confirmedPassword" class="inputStyle" :type="confirmedPasswordFieldType" v-model="confirmedPassword"
@@ -36,7 +36,6 @@
     </div>
 
     <button class="buttonStyle" :disabled="!passwordsMatch" v-on:click="signUp">Sign Up</button>
-
 
   </div>
 </template>
@@ -95,30 +94,38 @@ export default {
     },
 
     async signUp() {
-      let result;
+  let result;
 
-      if (this.userType === "Potent") {
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+  };
 
-        result = await axios.post("http://localhost:5500/", {
-          nameSurname: this.nameSurname, email: this.email, password: this.password, confirmedPassword: this.confirmedPassword, userType: this.userType, invitationCode: this.invitationCode, 'Content-Type': 'application/json'
+  const requestData = {
+    nameSurname: this.nameSurname,
+    email: this.email,
+    password: this.password,
+    confirmedPassword: this.confirmedPassword,
+    userType: this.userType,
+    invitationCode: this.invitationCode
+  };
 
-        });
-      }
-      else {
-        result = await axios.post("http://localhost:5500/", {
-          nameSurname: this.nameSurname, email: this.email, password: this.password, confirmedPassword: this.confirmedPassword, userType: this.userType, 'Content-Type': 'application/json'
+  try {
+    result = await axios.post("http://localhost:5500/signup", requestData, { headers });
+    console.warn(result);
 
-        });
-      }
-      console.warn(result);
+    if (result.status === 201) {
+      alert('You have successfully signed up!');
+    } else {
+      alert('Sign-up failed. Please check the console for details.');
+    }
+  } catch (error) {
+    console.error('An error occurred:', error);
+    alert('Sign-up failed. Please check the console for details.');
+  }
+},
 
-
-      if (result.status == 201) {
-        alert('You have successfully signed up!');
-      } else {
-        alert('Sign-up failed. Please check the console for details.');
-      }
-    },
 
 
   },
@@ -129,7 +136,7 @@ export default {
 
 <style>
  .logo {
-   width: 100px
+   height:224px;
  }
 
  .inputStyle {
